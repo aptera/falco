@@ -1,0 +1,55 @@
+#!/bin/bash
+
+case $1
+in
+
+"start") 
+git rev-parse --abbrev-ref HEAD > .mob
+git checkout -B mobbing
+git push --set-upstream origin mobbing
+;;
+
+"drive") 
+git fetch
+git checkout mobbing
+git pull
+;;
+
+"pass") 
+git add -u
+git reset -- .mob
+git commit -m 'wip'
+git push
+;;
+
+"commit") 
+if [ -z "$2" ]
+    then
+    echo "Please specify a commit message."
+else
+    git add -u
+    git reset -- .mob
+    git commit -m 'wip'
+    git push
+    git checkout $(cat .mob)
+    git merge mobbing --squash 
+    git commit -m "$2"
+    git push
+    git push -d origin mobbing 
+    git branch -D mobbing
+    rm .mob
+fi
+;;
+
+"stop") 
+git checkout $(cat .mob)
+rm .mob
+git push -d origin mobbing 
+git branch -D mobbing
+git fetch -—all -—prune
+;;
+
+*) echo "wat";;
+esac
+
+git status
