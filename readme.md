@@ -3,7 +3,7 @@ Sanitary pair and mob programming for the modern age
 
 ![](icon.jpg)
 
-Use this handy dandy script to coordinate driver rotation through git (in conjunction with a remote meeting tool (like Zoom) and a sweet timer (like Mobster)) to bring your remote mob programming sessions back to life!
+Use this handy dandy script (in conjunction with [a remote meeting tool](https://zoom.us) and a [sweet timer](http://mobster.cc)) to coordinate driver rotations through git, and bring your remote mob programming sessions back to life!
 
 ## Install
 
@@ -29,5 +29,5 @@ Navigate to your project directory in a terminal.
 A solid 93% on Rotten Tomatoes.
 
 ### Last driver
-1. Use `falco commit "{message}"` to commit work in progress, squash merge, and push to the original working branch.
+1. Use `falco commit <message>` to commit work in progress, squash merge, and push to the original working branch.
 2. If you are not the last driver, or if you do not want to merge the session's results, use `falco stop` to clean up your local workspace and return to the original working branch.
