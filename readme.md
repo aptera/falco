@@ -7,14 +7,14 @@ Use this handy dandy script to coordinate driver rotation through git (in conjun
 
 ## Install
 
-1. Download [the script](falco)
-1. Copy it to your bin: `cp falco /usr/local/bin/falco`
-1. Give it permish: `chmod +x /usr/local/bin/falco`
+1. Download the script in your favorite flavor ([PowerShell](falco.ps1) or [bash](falco.sh))
+1. Copy it somewhere your PATH knows about
+1. Make sure it has execute permish
 
 ## Use
 
 ### Everybody in the session
-Navigate to your project directory in a bash terminal.
+Navigate to your project directory in a terminal.
 
 ### First driver
 1. If you're not working on `master`, checkout the branch you'll be using.
