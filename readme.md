@@ -4,7 +4,7 @@ Sanitary pair and mob programming for the modern age
 ![](icon.png)
 
 
-Use this handy dandy script to coordinate driver rotation (in conjunction with a remote meeting tool (like Zoom) and a sweet timer (like Mobster)) to bring your remote mob programming sessions back to life!
+Use this handy dandy script to coordinate driver rotation through git (in conjunction with a remote meeting tool (like Zoom) and a sweet timer (like Mobster)) to bring your remote mob programming sessions back to life!
 
 ## Install
 
