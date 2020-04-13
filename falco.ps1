@@ -26,7 +26,7 @@ function Clean() {
 
 function Save() {
     git add -u
-    git reset -- .mob
+    git update-index --skip-worktree .mob
     git commit -m 'wip'
     git push
 }
