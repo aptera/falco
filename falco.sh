@@ -7,8 +7,8 @@ function clean() {
 }
 
 function save() {
-    git add -u
-    git update-index --skip-worktree .mob
+    git add .
+    git reset .mob
     git commit -m 'wip'
     git push
 }
