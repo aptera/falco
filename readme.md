@@ -7,9 +7,15 @@ Use this handy dandy script (in conjunction with [a remote meeting tool](https:/
 
 ## Install
 
-1. Download the script in your favorite flavor ([PowerShell](falco.ps1) or [bash](falco.sh))
-1. Copy it somewhere your PATH knows about
-1. Make sure it has execute permish
+### Bash (macOS, Linux)
+
+1. Download [falco](bash/falco.sh) and [its install script](install.sh) to the same directory. 
+1. Run the install script.
+
+### PowerShell (Windows)
+
+1. Download [falco](powershell/falco.ps1)
+1. Fiddle for a bit
 
 ## Use
 
