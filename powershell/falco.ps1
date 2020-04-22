@@ -24,22 +24,16 @@ function Invoke-Git($file) {
 }
 
 function Clean() {
-    git push -d origin mobbing 
-    git branch -D mobbing
+    Invoke-Git "clean"
     Remove-Item .mob
 }
 
 function Save() {
-    git add .
-    git reset .mob
-    git commit -m 'wip'
-    git push
+    Invoke-Git "save"
 }
 
 function Start-Session() {
-    git rev-parse --abbrev-ref HEAD > .mob
-    git checkout -B mobbing
-    git push --set-upstream origin mobbing
+    Invoke-Git "start"
 }
 
 function Stop() {
@@ -49,9 +43,7 @@ function Stop() {
 }
 
 function Drive() {
-    git fetch
-    git checkout mobbing
-    git pull
+    Invoke-Git "drive"
 }
 
 function Commit() {
