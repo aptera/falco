@@ -42,6 +42,7 @@ function Start-Session() {
 
 function Stop() {
     Invoke-Git "stop" $(Get-Content .mob)
+    Remove-Item .mob
 }
 
 function Drive() {

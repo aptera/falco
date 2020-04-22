@@ -37,6 +37,7 @@ function start() {
 
 function stop() {
     . $gitDir/stop.git $(cat .mob)
+    rm -f .mob
 }
 
 function drive() {

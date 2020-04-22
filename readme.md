@@ -9,7 +9,7 @@ Use this handy dandy script (in conjunction with [a remote meeting tool](https:/
 
 1. Download this repo as a .zip file
 1. Extract its files to a temporary location.
-1. Run the `install` script for your preferred platform (bash or PowerShell).
+1. Run the `install` script for your preferred platform (bash or PowerShell). Heads up: this may call for a `chmod +x ./install.sh` or an `Unblock-File ./install.ps1`, depending on your local script security situation.
 
 ## Use
 
