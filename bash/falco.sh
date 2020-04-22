@@ -1,10 +1,12 @@
 #!/bin/bash
 
+command=$1
+message=$2
 thisDir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 gitDir=$thisDir/git
 
 function main() {
-    case $1
+    case $command
     in
 
     "start") start;;
@@ -22,6 +24,7 @@ function main() {
 
 function clean() {
     . $gitDir/clean.git 
+    rm -fq .mob
 }
 
 function save() {
@@ -41,18 +44,18 @@ function drive() {
 }
 
 function commit() {
-    if [ -z "$2" ]
+    if [ -z "$message" ]
         then
         >&2 echo "Please specify a commit message."
     else
         save
-        merge
+        merge $message
         clean
     fi 
 }
 
 function merge() {
-    . $gitDir/merge.git $(cat .mob) "$2"
+    . $gitDir/merge.git $(cat .mob) "$1"
 }
 
 function test() {

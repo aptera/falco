@@ -1,4 +1,3 @@
-
-    git rev-parse --abbrev-ref HEAD > .mob
-    git checkout -B mobbing
-    git push --set-upstream origin mobbing
+git rev-parse --abbrev-ref HEAD > .mob
+git checkout -B mobbing
+git push --set-upstream origin mobbing
