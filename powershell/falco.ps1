@@ -15,7 +15,12 @@ function Main() {
         }
     }
     
-    git status
+    Invoke-Git "status"
+}
+
+function Invoke-Git($file) {
+    $git = $(Get-Content "$PSScriptRoot\git\$file.git" -Raw)
+    Invoke-Expression "$git"
 }
 
 function Clean() {
