@@ -1,34 +1,43 @@
 #!/bin/bash
 
+thisDir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+gitDir=$thisDir/git
+
+function main() {
+    case $1
+    in
+
+    "start") start;;
+    "drive") drive;;
+    "pass") save;;
+    "commit") commit;;
+    "stop") stop;;
+    "test") test;;
+
+    *) >&2 echo "wat";;
+    esac
+
+    git status
+}
+
 function clean() {
-    git push -d origin mobbing 
-    git branch -D mobbing
-    rm .mob
+    . $gitDir/clean.git 
 }
 
 function save() {
-    git add .
-    git reset .mob
-    git commit -m 'wip'
-    git push
+    . $gitDir/save.git 
 }
 
 function start() {
-    git rev-parse --abbrev-ref HEAD > .mob
-    git checkout -B mobbing
-    git push --set-upstream origin mobbing
+    . $gitDir/start.git 
 }
 
 function stop() {
-    git checkout $(cat .mob)
-    clean
-    git fetch --prune
+    . $gitDir/stop.git $(cat .mob)
 }
 
 function drive() {
-    git fetch
-    git checkout mobbing
-    git pull
+    . $gitDir/drive.git 
 }
 
 function commit() {
@@ -43,22 +52,11 @@ function commit() {
 }
 
 function merge() {
-    git checkout $(cat .mob)
-    git merge mobbing --squash 
-    git commit -m "$2"
-    git push
+    . $gitDir/merge.git $(cat .mob) "$2"
 }
 
-case $1
-in
+function test() {
+    . $gitDir/status.git "hi"
+}
 
-"start") start;;
-"drive") drive;;
-"pass") save;;
-"commit") commit;;
-"stop") stop;;
-
-*) >&2 echo "wat";;
-esac
-
-git status
+main
