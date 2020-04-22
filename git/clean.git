@@ -1,4 +1,1 @@
-
-    git push -d origin mobbing 
-    git branch -D mobbing
-    rm .mob
+git branch -D mobbing

@@ -1,4 +1,3 @@
-
-    git fetch
-    git checkout mobbing
-    git pull
+git fetch
+git checkout mobbing
+git pull

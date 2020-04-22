@@ -1,5 +1,4 @@
-
-    git add .
-    git reset .mob
-    git commit -m 'wip'
-    git push
+git add .
+git reset .mob
+git commit -m 'wip'
+git push
