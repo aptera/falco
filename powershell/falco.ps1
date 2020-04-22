@@ -15,12 +15,13 @@ function Main() {
         }
     }
     
-    Invoke-Git "status"
+    Invoke-Git "status" 
 }
 
-function Invoke-Git($file) {
+function Invoke-Git($file, $arg1, $arg2) {
     $git = $(Get-Content "$PSScriptRoot\git\$file.git" -Raw)
-    Invoke-Expression "$git"
+    $expression = $git.Replace('$1', $arg1).Replace('$2', $arg2)
+    Invoke-Expression $expression
 }
 
 function Clean() {
@@ -37,9 +38,7 @@ function Start-Session() {
 }
 
 function Stop() {
-    git checkout $(Get-Content .mob)
-    Clean
-    git fetch --prune
+    Invoke-Git "stop" $(Get-Content .mob)
 }
 
 function Drive() {
@@ -58,10 +57,7 @@ function Commit() {
 }
 
 function Merge() {
-    git checkout $(Get-Content .mob)
-    git merge mobbing --squash 
-    git commit -m $message
-    git push
+    Invoke-Git "merge" $(Get-Content .mob) $message
 }
 
 Main
