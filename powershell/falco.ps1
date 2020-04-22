@@ -15,12 +15,15 @@ function Main() {
         }
     }
     
-    Invoke-Git "status" 
+    Invoke-Git "status"
 }
 
-function Invoke-Git($file, $arg1, $arg2) {
-    $git = $(Get-Content "$PSScriptRoot\git\$file.git" -Raw)
-    $expression = $git.Replace('$1', $arg1).Replace('$2', $arg2)
+function Invoke-Git($file) {
+    write-host "args count = $($args.Length)"
+    $expression = $(Get-Content "$PSScriptRoot\git\$file.git" -Raw)
+    for ($i=0; $i -lt $args.Length; $i++) {
+        $expression = $expression.Replace("`$$($i+1)", $args[$i])
+    }
     Invoke-Expression $expression
 }
 
