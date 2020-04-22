@@ -9,13 +9,14 @@ Use this handy dandy script (in conjunction with [a remote meeting tool](https:/
 
 ### Bash (macOS, Linux)
 
-1. Download [falco](bash/falco.sh) and [its install script](install.sh) to the same directory. 
+1. Download [falco](bash/falco.sh) and [its install script](bash/install.sh) to the same directory. 
 1. Run the install script.
 
 ### PowerShell (Windows)
 
-1. Download [falco](powershell/falco.ps1)
-1. Fiddle for a bit
+1. Download [falco](powershell/falco.ps1) and [its install script](powershell/install.ps1) to the same directory.
+1. If necessary, run `Unblock-File install.ps1`.
+1. Run the install script.
 
 ## Use
 
