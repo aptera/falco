@@ -1,14 +1,14 @@
 function main() {
     $dir="$env:appdata\falco"
-    $script="$PSScriptRoot\falco.ps1"
-    Install-Script $script $dir
+    Install-Files $dir
     Add-ToPath $dir
-    Unblock-File "$dir\falco.ps1"
+    Unblock-File "$dir\**\*"
 }
 
-function Install-Script($script, $dir) {
+function Install-Files($dir) {
     New-Item -Path $dir -ItemType Directory -Force >$null
-    Copy-Item -Force $script $dir
+    Copy-Item -Force "$PSScriptRoot\falco.ps1" $dir
+    Copy-Item -Force -Recurse "$PSScriptRoot\..\git" $dir
 }
 
 function Add-ToPath($dir) {
