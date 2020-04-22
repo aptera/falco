@@ -7,16 +7,9 @@ Use this handy dandy script (in conjunction with [a remote meeting tool](https:/
 
 ## Install
 
-### Bash (macOS, Linux)
-
-1. Download [falco](bash/falco.sh) and [its install script](bash/install.sh) to the same directory. 
-1. Run the install script.
-
-### PowerShell (Windows)
-
-1. Download [falco](powershell/falco.ps1) and [its install script](powershell/install.ps1) to the same directory.
-1. If necessary, run `Unblock-File install.ps1`.
-1. Run the install script.
+1. Download this repo as a .zip file
+1. Extract its files to a temporary location.
+1. Run the `install` script for your preferred platform (bash or PowerShell).
 
 ## Use
 
