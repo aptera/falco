@@ -24,7 +24,7 @@ function main() {
 
 function clean() {
     . $gitDir/clean.git 
-    rm -fq .mob
+    rm -f .mob
 }
 
 function save() {
