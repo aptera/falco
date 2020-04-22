@@ -9,5 +9,8 @@ cp -rf $thisDir/../git $binDir
 chmod a+x $binDir/falco
 chmod a+x $binDir/git/*.git
 
-echo 'export PATH="'$binDir':$PATH"' >> ~/.bash_profile
-cat ~/.bash_profile
+if ! grep -q $binDir ~/.bash_profile 
+then 
+    echo 'export PATH="'$binDir':$PATH"' >> ~/.bash_profile 
+    . ~/.bash_profile
+fi
