@@ -15,7 +15,8 @@ function Add-ToPath($dir) {
     $envPaths = $env:Path -split ';'
     if ($envPaths -notcontains $dir) {
         $envPaths = $envPaths + $dir | Where-Object { $_ }
-        $env:Path = $envPaths -join ';'
+        $updatedPath = $envPaths -join ';'
+		Set-ItemProperty -Path 'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Session Manager\Environment' -Name PATH -Value $updatedPath
     }
 }
     
