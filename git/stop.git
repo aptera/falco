@@ -1,3 +1,0 @@
-git checkout $1
-git branch -D mobbing
-git fetch --prune

@@ -1,0 +1,29 @@
+{
+  "name": "@aptera/falco",
+  "version": "0.2.0",
+  "description": "Sanitary pair and mob programming for the modern age",
+  "main": "bin/index.js",
+  "type": "module",
+  "scripts": {
+    "test": "jasmine"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://aptera@dev.azure.com/aptera/Aptera/_git/falco"
+  },
+  "keywords": [
+    "mob programming",
+    "pair programming",
+    "remote",
+    "git handover"
+  ],
+  "author": "jfazzaro",
+  "license": "MIT",
+  "bin": {
+    "falco": "./bin/index.js"
+  },
+  "devDependencies": {
+    "jasmine": "^3.5.0",
+    "rewiremock": "^3.14.1"
+  }
+}
