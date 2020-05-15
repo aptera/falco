@@ -7,8 +7,7 @@ Use this handy dandy script (in conjunction with [a remote meeting tool](https:/
 
 ## Install
 
-1. Install [Nodejs](https://nodejs.org/en/download/)
-1. Run `npm i -g @aptera/falco` (you may have to do this at an elevated command prompt)
+    npm i -g @aptera/falco
 
 ## Use
 
