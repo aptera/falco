@@ -16,7 +16,8 @@ function run(commands) {
 }
 
 function usage() {
-    console.log("USAGE");
+    const content = file.read("./usage.txt")
+    console.log(content);
 }
 
 function start() {

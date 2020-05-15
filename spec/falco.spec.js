@@ -4,8 +4,10 @@ describe("Falco", () => {
 
     describe("given no arguments", () => {
         it("shows usage", () => {
+            spyOn(mocked.file, 'read').and.returnValue("USAGE FROM FILE");
             subject.run();
-            expect(global.console.log).toHaveBeenCalledWith("USAGE")
+            expect(mocked.file.read).toHaveBeenCalledWith("../usage.txt");
+            expect(global.console.log).toHaveBeenCalledWith("USAGE FROM FILE")
         });
     });
 

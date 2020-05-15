@@ -1,0 +1,22 @@
+falco: Sanitary pair and mob programming for the modern age
+
+    start               Begin a mob programming session 
+                        from the current branch.
+
+    pass                Handoff the work in progress to the 
+                        git repo, so another driver can take over.
+
+    driver              Pull down the work in progress from the 
+                        git repo to begin driving more changes.
+
+    commit <message>    Commit and squash merge all changes from the 
+                        session back into the original working branch. 
+                        This ends the mobbing session.
+
+    clean               When another driver commits the work from the 
+                        session, other drivers from the session can
+                        run this to clean up the session locally.
+
+    stop                Aborts the mobbing session and resets the local
+                        environment.
+
