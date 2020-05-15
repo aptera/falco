@@ -1,5 +1,6 @@
 const cmd = require('./cmd');
 const file = require('./file');
+const mobFile = ".mob";
 
 module.exports = {
     run: (command, arg) => {
@@ -20,7 +21,7 @@ function usage() {
 
 function start() {
     return [
-        "git rev-parse --abbrev-ref HEAD > .mob",
+        `git rev-parse --abbrev-ref HEAD > ${mobFile}`,
         "git checkout -B mobbing",
         "git push --set-upstream origin mobbing"
     ];
@@ -29,13 +30,10 @@ function start() {
 function commit(message) {
     if (!message)
         throw new Error("Please specify a commit message.");
-    const branchName = file.read(".mob");
-    file.remove(".mob")
-    return merge(branchName, message)
-            .concat(clean());
-}
 
-function merge(branchName, message) {
+    const branchName = file.read(mobFile);
+    file.remove(mobFile);
+
     return [
         "git add .",
         "git commit -m 'wip'",
@@ -44,7 +42,8 @@ function merge(branchName, message) {
         "git merge mobbing --squash",
         `git commit -m '${message}'`,
         "git push",
-        "git push -d origin mobbing"
+        "git push -d origin mobbing",
+        "git branch -D mobbing"
     ];
 }
 
@@ -57,22 +56,22 @@ function drive() {
 }
 
 function clean() {
-    file.remove(".mob")
+    file.remove(mobFile)
     return ["git branch -D mobbing"];
 }
 
 function pass() {
     return [
         "git add .",
-        "git reset .mob",
+        `git reset ${mobFile}`,
         "git commit -m 'wip'",
         "git push"
     ];
 }
 
 function stop() {
-    const branchName = file.read(".mob");
-    file.remove(".mob");
+    const branchName = file.read(mobFile);
+    file.remove(mobFile);
     return [
         `git checkout ${branchName}`,
         "git branch -D mobbing",
@@ -81,10 +80,10 @@ function stop() {
 }
 
 const commands = {
-    start: start,
-    commit: commit,
-    drive: drive,
-    pass: pass,
-    stop: stop,
-    clean: clean
+    start,
+    commit,
+    drive,
+    pass,
+    stop,
+    clean
 }

@@ -2,9 +2,9 @@ const { readFileSync, unlinkSync, existsSync } = require('fs');
 
 module.exports = {
     read: (path) => {
-        if (existsSync(path))
-            return readFileSync(path);
-        return "";
+        return existsSync(path)
+            ? readFileSync(path)
+            : "";
     },
     remove: (path) => {
         if (existsSync(path))
