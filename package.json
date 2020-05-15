@@ -1,11 +1,12 @@
 {
   "name": "@aptera/falco",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Sanitary pair and mob programming for the modern age",
   "main": "bin/index.js",
   "type": "module",
   "scripts": {
-    "test": "jasmine"
+    "test": "jasmine",
+    "tdd": "nodemon --ext js --exec 'jasmine'"
   },
   "repository": {
     "type": "git",
