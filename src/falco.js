@@ -6,11 +6,7 @@ const mobFile = ".mob";
 module.exports = {
     run: (command, arg) => {
         const f = commands[command];
-        if (f)
-            run(f(arg));
-        else {
-            usage.show();
-        }
+        f ? run(f(arg)) : usage.show();
     }
 }
 
