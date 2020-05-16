@@ -25,6 +25,7 @@
   },
   "devDependencies": {
     "jasmine": "^3.5.0",
-    "rewiremock": "^3.14.1"
+    "rewiremock": "^3.14.1",
+    "cli-usage": "^0.1.10"
   }
 }

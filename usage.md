@@ -1,4 +1,6 @@
-falco: Sanitary pair and mob programming for the modern age
+# falco 
+
+Sanitary pair and mob programming for the modern age
 
     start               Begin a mob programming session 
                         from the current branch.

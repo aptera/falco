@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 const falco = require('../src/falco');
+
 try {
     falco.run(...process.argv.slice(2));
 } catch (e) {

@@ -1,12 +1,16 @@
+const usage = require('./usage');
 const cmd = require('./cmd');
 const file = require('./file');
-// const usageText = require('../usage.txt');
 const mobFile = ".mob";
 
 module.exports = {
     run: (command, arg) => {
         const f = commands[command];
-        f ? run(f(arg)) : usage();
+        if (f)
+            run(f(arg));
+        else {
+            usage.show();
+        }
     }
 }
 
@@ -14,11 +18,6 @@ function run(commands) {
     for (const command of commands)
         cmd.run(command);
     cmd.run("git status");
-}
-
-function usage() {
-    const content = file.read("../usage.txt")
-    console.log(content);
 }
 
 function start() {

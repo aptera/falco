@@ -4,10 +4,8 @@ describe("Falco", () => {
 
     describe("given no arguments", () => {
         it("shows usage", () => {
-            spyOn(mocked.file, 'read').and.returnValue("USAGE FROM FILE");
             subject.run();
-            expect(mocked.file.read).toHaveBeenCalledWith("../usage.txt");
-            expect(global.console.log).toHaveBeenCalledWith("USAGE FROM FILE")
+            expect(mocked.usage.show).toHaveBeenCalled();
         });
     });
 
@@ -130,10 +128,12 @@ describe("Falco", () => {
     function mock() {
         rewiremock('../src/cmd').with(mocked.cmd);
         rewiremock('../src/file').with(mocked.file);
+        rewiremock('../src/usage').with(mocked.usage);
         rewiremock.enable();
         spyOn(mocked.cmd, 'run');
         spyOn(mocked.file, 'remove');
-        spyOn(console, 'log');
+        spyOn(mocked.usage, 'show');
+        spyOn(console, 'log').and.callThrough();
     }
 
     function expectCommands(commands) {
@@ -144,6 +144,7 @@ describe("Falco", () => {
 
     const mocked = {
         cmd: { run: () => { } },
+        usage: { show: () => { } },
         file: {
             read: () => { },
             remove: () => { },
