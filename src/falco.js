@@ -1,5 +1,6 @@
 const cmd = require('./cmd');
 const file = require('./file');
+// const usageText = require('../usage.txt');
 const mobFile = ".mob";
 
 module.exports = {
@@ -16,7 +17,7 @@ function run(commands) {
 }
 
 function usage() {
-    const content = file.read("./usage.txt")
+    const content = file.read("../usage.txt")
     console.log(content);
 }
 
