@@ -12,15 +12,15 @@ Use this handy dandy script (in conjunction with [a remote meeting tool](https:/
 ## Use
 
 ### Everybody in the session
-Navigate to your project directory in a terminal.
+1. Navigate to your project directory in a terminal.
+1. If you're not working on `master`, checkout the branch you'll be using.
 
 ### First driver
-1. If you're not working on `master`, checkout the branch you'll be using.
-1. Begin the session with `falco start`. (This will create a `mobbing` branch off the working branch, to hold work-in-progress commits during the session.)
-1. When it's time to switch to the next driver, `falco pass`. (This will make a "wip" commit and push it to the `mobbing` branch.)
+1. Begin the session with `falco start`. (This will create a `<working-branch>-mobbing` branch off the working branch, to hold work-in-progress commits during the session.)
+1. When it's time to switch to the next driver, `falco pass`. (This will make a "wip" commit and push it to the `<working-branch>-mobbing` branch.)
 
 ### Nth driver
-1. Begin your turn with `falco drive`. (This will checkout the `mobbing` branch and pull down the latest wip commit(s).)
+1. Begin your turn with `falco drive`. (This will checkout the `<working-branch>-mobbing` branch and pull down the latest wip commit(s).)
 1. When it's time to switch to the next driver, `falco pass`.
 
 ### Baby driver

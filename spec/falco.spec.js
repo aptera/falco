@@ -10,11 +10,12 @@ describe("Falco", () => {
     });
 
     it("starts the mob session", () => {
+        spyOn(mocked.cmd, 'read').and.returnValue("working-branch");
         subject.run("start");
+        expectCurrentBranchToHaveBeenRead();
         expectCommands([
-            "git rev-parse --abbrev-ref HEAD > .mob",
-            "git checkout -B mobbing",
-            "git push --set-upstream origin mobbing",
+            "git checkout -B working-branch-mobbing",
+            "git push --set-upstream origin working-branch-mobbing",
             "git status"
         ]);
     });
@@ -23,21 +24,36 @@ describe("Falco", () => {
         subject.run("pass");
         expectCommands([
             "git add .",
-            "git reset .mob",
             "git commit -m 'wip'",
             "git push",
             "git status"
         ]);
     });
 
-    it("begins driving", () => {
-        subject.run("drive");
-        expectCommands([
+    describe("when driving", () => {
+        describe("given the user is not on the mobbing branch yet", () => {
+            it("checks it out", () => {
+                spyOn(mocked.cmd, 'read').and.returnValue("driving-branch");
+                subject.run("drive");
+                expectCurrentBranchToHaveBeenRead();
+                expectCommands(expectedCommands);
+            });
+        });
+
+        describe("given the user is already on the mobbing branch", () => {
+            it("just begins driving", () => {
+                spyOn(mocked.cmd, 'read').and.returnValue("driving-branch-mobbing");
+                subject.run("drive");
+                expectCommands(expectedCommands);
+            });
+        });
+
+        const expectedCommands = [
             "git fetch",
-            "git checkout mobbing",
+            "git checkout driving-branch-mobbing",
             "git pull",
             "git status"
-        ]);
+        ];
     });
 
     describe("when committing", () => {
@@ -49,75 +65,80 @@ describe("Falco", () => {
             });
         });
 
+        describe("given the user is not on a mobbing branch", () => {
+            it("throws an error", () => {
+                spyOn(mocked.cmd, 'read').and.returnValue("some-other-branch");
+                expect(() => subject.run("commit", "feat: OH YEAH"))
+                    .toThrowError("You are not on a mobbing branch!");
+            });
+        });
+
         describe("given a message", () => {
+            beforeEach(() => {
+                spyOn(mocked.cmd, 'read').and.returnValue("committing-branch-mobbing");
+                subject.run("commit", "feat: we did it!");
+            });
 
             it("commits the session", () => {
                 expectCommands([
                     "git add .",
                     "git commit -m 'wip'",
                     "git push",
-                    "git checkout working-branch",
-                    "git merge mobbing --squash",
+                    "git checkout committing-branch",
+                    "git merge committing-branch-mobbing --squash",
                     "git commit -m 'feat: we did it!'",
                     "git push",
-                    "git push -d origin mobbing",
-                    "git branch -D mobbing",
+                    "git push -d origin committing-branch-mobbing",
+                    "git branch -D committing-branch-mobbing",
                     "git status"
                 ]);
-            });
-
-            it("deletes the mob file", () => {
-                expect(mocked.file.read).toHaveBeenCalledWith(".mob");
-            });
-
-            beforeEach(() => {
-                spyOn(mocked.file, 'read').and.returnValue("working-branch");
-                subject.run("commit", "feat: we did it!");
             });
         });
     });
 
     describe("when stopping", () => {
 
-        it("reads from the mob file", () => {
-            expect(mocked.file.read).toHaveBeenCalledWith(".mob");
+        beforeEach(() => {
+            spyOn(mocked.cmd, 'read').and.returnValue("stopping-branch");
+            subject.run("stop");
         });
 
-        it("deletes the mob file", () => {
-            expect(mocked.file.remove).toHaveBeenCalledWith(".mob");
+        it("reads the current branch", () => {
+            expectCurrentBranchToHaveBeenRead();
         });
 
         it("stops the session", () => {
             expectCommands([
-                "git checkout feature-branch",
-                "git branch -D mobbing",
+                "git checkout stopping-branch",
+                "git branch -D stopping-branch-mobbing",
                 "git fetch --prune",
                 "git status"
             ]);
         });
 
-        beforeEach(() => {
-            spyOn(mocked.file, 'read').and.returnValue("feature-branch");
-            subject.run("stop");
-        });
     });
 
     describe("when cleaning", () => {
+        describe("given the user is not on a mobbing branch", () => {
+            it("throws an error", () => {
+                mocked.cmd.read.and.returnValue("cleaning-branch");
+                expect(() => subject.run("clean"))
+                    .toThrowError("You are not on a mobbing branch!");
+            });
+        });
 
-        it("deletes the mob file", () => {
-            expect(mocked.file.remove).toHaveBeenCalledWith(".mob");
+        beforeEach(() => {
+            spyOn(mocked.cmd, 'read').and.returnValue("cleaning-branch-mobbing");
+            subject.run("clean");
         });
 
         it("cleans the workspace", () => {
             expectCommands([
-                "git branch -D mobbing",
+                "git branch -D cleaning-branch-mobbing",
                 "git status"
             ]);
         });
 
-        beforeEach(() => {
-            subject.run("clean");
-        })
     });
 
     beforeEach(() => {
@@ -127,13 +148,15 @@ describe("Falco", () => {
 
     function mock() {
         rewiremock('../src/cmd').with(mocked.cmd);
-        rewiremock('../src/file').with(mocked.file);
         rewiremock('../src/usage').with(mocked.usage);
         rewiremock.enable();
         spyOn(mocked.cmd, 'run');
-        spyOn(mocked.file, 'remove');
         spyOn(mocked.usage, 'show');
         spyOn(console, 'log').and.callThrough();
+    }
+
+    function expectCurrentBranchToHaveBeenRead() {
+        expect(mocked.cmd.read).toHaveBeenCalledWith("git rev-parse --abbrev-ref HEAD");
     }
 
     function expectCommands(commands) {
@@ -143,12 +166,11 @@ describe("Falco", () => {
     }
 
     const mocked = {
-        cmd: { run: () => { } },
+        cmd: {
+            run: () => { },
+            read: () => { }
+        },
         usage: { show: () => { } },
-        file: {
-            read: () => { },
-            remove: () => { },
-        }
     };
     let subject;
 })

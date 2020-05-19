@@ -1,6 +1,6 @@
 {
   "name": "@aptera/falco",
-  "version": "0.2.5",
+  "version": "0.3.0",
   "description": "Sanitary pair and mob programming for the modern age",
   "main": "bin/index.js",
   "type": "module",

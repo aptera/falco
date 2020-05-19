@@ -1,7 +1,5 @@
 const usage = require('./usage');
 const cmd = require('./cmd');
-const file = require('./file');
-const mobFile = ".mob";
 
 module.exports = {
     run: (command, arg) => {
@@ -17,10 +15,10 @@ function run(commands) {
 }
 
 function start() {
+    const mobBranchName = mobified(currentBranchName());
     return [
-        `git rev-parse --abbrev-ref HEAD > ${mobFile}`,
-        "git checkout -B mobbing",
-        "git push --set-upstream origin mobbing"
+        `git checkout -B ${mobBranchName}`,
+        `git push --set-upstream origin ${mobBranchName}`
     ];
 }
 
@@ -28,52 +26,67 @@ function commit(message) {
     if (!message)
         throw new Error("Please specify a commit message.");
 
-    const branchName = file.read(mobFile);
-    file.remove(mobFile);
+    const mobBranchName = currentBranchName();
+    validateThatBranchIsMobbing(mobBranchName);
 
     return [
         "git add .",
         "git commit -m 'wip'",
         "git push",
-        `git checkout ${branchName}`,
-        "git merge mobbing --squash",
+        `git checkout ${mobBranchName.replace("-mobbing", "")}`,
+        `git merge ${mobBranchName} --squash`,
         `git commit -m '${message}'`,
         "git push",
-        "git push -d origin mobbing",
-        "git branch -D mobbing"
+        `git push -d origin ${mobBranchName}`,
+        `git branch -D ${mobBranchName}`
     ];
 }
 
 function drive() {
     return [
         "git fetch",
-        "git checkout mobbing",
+        `git checkout ${mobified(currentBranchName())}`,
         "git pull"
     ]
 }
 
 function clean() {
-    file.remove(mobFile)
-    return ["git branch -D mobbing"];
+    const mobBranchName = currentBranchName();
+    validateThatBranchIsMobbing(mobBranchName);
+
+    return [`git branch -D ${mobBranchName}`];
 }
 
 function pass() {
     return [
         "git add .",
-        `git reset ${mobFile}`,
         "git commit -m 'wip'",
         "git push"
     ];
 }
 
 function stop() {
-    const branchName = file.read(mobFile);
-    file.remove(mobFile);
+    const branchName = currentBranchName();
     return [
         `git checkout ${branchName}`,
-        "git branch -D mobbing",
+        `git branch -D ${mobified(branchName)}`,
         "git fetch --prune"
     ]
+}
+
+function currentBranchName() {
+    return cmd.read("git rev-parse --abbrev-ref HEAD");
+}
+
+function mobified(branchName) {
+    return branchName.endsWith("-mobbing") 
+         ? branchName
+         : `${branchName}-mobbing`;
+}
+
+function validateThatBranchIsMobbing(branchName) {
+    if (!branchName.endsWith("-mobbing"))
+        throw new Error("You are not on a mobbing branch!");
 }
 
 const commands = {
