@@ -1,5 +1,6 @@
 const usage = require('./usage');
 const cmd = require('./cmd');
+const strings = require('./strings');
 
 module.exports = {
     run: (command, arg) => {
@@ -24,7 +25,7 @@ function start() {
 
 function commit(message) {
     if (!message)
-        throw new Error("Please specify a commit message.");
+        throw new Error(strings.noCommitMessageError);
 
     const mobBranchName = currentBranchName();
     validateThatBranchIsMobbing(mobBranchName);
@@ -86,7 +87,7 @@ function mobified(branchName) {
 
 function validateThatBranchIsMobbing(branchName) {
     if (!branchName.endsWith("-mobbing"))
-        throw new Error("You are not on a mobbing branch!");
+        throw new Error(strings.notOnAMobbingBranchError);
 }
 
 const commands = {

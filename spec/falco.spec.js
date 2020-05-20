@@ -1,4 +1,5 @@
 const rewiremock = require('rewiremock/node');
+const strings = require('../src/strings');
 
 describe("Falco", () => {
 
@@ -61,7 +62,7 @@ describe("Falco", () => {
         describe("given no message", () => {
             it("throws an error", () => {
                 expect(() => subject.run("commit"))
-                    .toThrowError("Please specify a commit message.");
+                    .toThrowError(strings.noCommitMessageError);
             });
         });
 
@@ -69,7 +70,7 @@ describe("Falco", () => {
             it("throws an error", () => {
                 spyOn(mocked.cmd, 'read').and.returnValue("some-other-branch");
                 expect(() => subject.run("commit", "feat: OH YEAH"))
-                    .toThrowError("You are not on a mobbing branch!");
+                    .toThrowError(strings.notOnAMobbingBranchError);
             });
         });
 
@@ -123,7 +124,7 @@ describe("Falco", () => {
             it("throws an error", () => {
                 mocked.cmd.read.and.returnValue("cleaning-branch");
                 expect(() => subject.run("clean"))
-                    .toThrowError("You are not on a mobbing branch!");
+                    .toThrowError(strings.notOnAMobbingBranchError);
             });
         });
 
