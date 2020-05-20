@@ -100,7 +100,7 @@ describe("Falco", () => {
     describe("when stopping", () => {
 
         beforeEach(() => {
-            spyOn(mocked.cmd, 'read').and.returnValue("stopping-branch");
+            spyOn(mocked.cmd, 'read').and.returnValue("stopping-branch-mobbing");
             subject.run("stop");
         });
 

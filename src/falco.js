@@ -69,7 +69,7 @@ function pass() {
 function stop() {
     const branchName = currentBranchName();
     return [
-        `git checkout ${branchName}`,
+        `git checkout ${branchName.replace("-mobbing", "")}`,
         `git branch -D ${mobified(branchName)}`,
         "git fetch --prune"
     ]
