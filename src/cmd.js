@@ -6,6 +6,6 @@ module.exports = {
     },
 
     read: (command) => {
-        return execSync(command);
+        return execSync(command).toString().trim();
     }
 }
