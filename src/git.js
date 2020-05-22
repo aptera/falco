@@ -4,7 +4,7 @@ const cmd = require('./cmd');
 module.exports = {
     root: root,
     currentBranch: current,
-    mobBranch: () => mobified(current()),
+    mobBranch: () => strings.mobified(current()),
     validateThatBranchIsMobbing: validateThatBranchIsMobbing,
 
     status: () => `git status`,
@@ -32,19 +32,11 @@ function root() {
     }
 }
 
-// SPIKE
 function current() {
-    return cmd.read("git rev-parse --abbrev-ref HEAD");
-}
-
-// SPIKE
-function mobified(branchName) {
-    return branchName.endsWith("-mobbing")
-        ? branchName
-        : `${branchName}-mobbing`;
+    return cmd.read(`git rev-parse --abbrev-ref HEAD`);
 }
 
 function validateThatBranchIsMobbing(branchName) {
-    if (!branchName.endsWith("-mobbing"))
+    if (!strings.isMobbing(branchName))
         throw new Error(strings.notOnAMobbingBranchError);
 }

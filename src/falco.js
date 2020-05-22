@@ -40,17 +40,17 @@ function commit(message) {
     if (!message)
         throw new Error(strings.noCommitMessageError);
 
-    const mobBranchName = git.currentBranch();
-    git.validateThatBranchIsMobbing(mobBranchName);
+    const mobBranch = git.currentBranch();
+    git.validateThatBranchIsMobbing(mobBranch);
 
     return [
         ...pass(),
-        git.checkout(mobBranchName.replace("-mobbing", "")),
-        git.merge(mobBranchName),
+        git.checkout(strings.workified(mobBranch)),
+        git.merge(mobBranch),
         git.commit(message),
         git.push(),
-        git.deleteUpstream(mobBranchName),
-        git.deleteLocal(mobBranchName)
+        git.deleteUpstream(mobBranch),
+        git.deleteLocal(mobBranch)
     ];
 }
 
@@ -63,24 +63,24 @@ function drive() {
 }
 
 function clean() {
-    const mobBranchName = git.currentBranch();
-    git.validateThatBranchIsMobbing(mobBranchName);
+    const mobBranch = git.currentBranch();
+    git.validateThatBranchIsMobbing(mobBranch);
 
-    return [git.deleteLocal(mobBranchName)];
+    return [git.deleteLocal(mobBranch)];
 }
 
 function pass() {
     return [
         git.stage(),
-        git.commit('wip'),
+        git.commit(strings.wipCommitMessage),
         git.push()
     ];
 }
 
 function stop() {
-    const branchName = git.currentBranch();
+    const branch = git.currentBranch();
     return [
-        git.checkout(branchName.replace("-mobbing", "")),
+        git.checkout(strings.workified(branch)),
         git.deleteLocal(git.mobBranch()),
         git.fetch()
     ]
