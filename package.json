@@ -24,6 +24,7 @@
   },
   "devDependencies": {
     "jasmine": "^3.5.0",
-    "rewiremock": "^3.14.1"
+    "rewiremock": "^3.14.1",
+    "nodemon":"^2.0.4"
   }
 }

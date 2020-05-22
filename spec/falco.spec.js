@@ -1,5 +1,6 @@
 const rewiremock = require('rewiremock/node');
 const strings = require('../src/strings');
+const git = require('../src/git');
 
 describe("Falco", () => {
 
@@ -10,10 +11,18 @@ describe("Falco", () => {
         });
     });
 
+    describe("given the user is not in a git repo", () => {
+        it("throws an error", () => {
+            git.root.and.returnValue(null);
+            expect(() => subject.run("start"))
+                .toThrowError(strings.notUnderAGitRepoError);
+        });
+    });
+
     it("starts the mob session", () => {
-        spyOn(mocked.cmd, 'read').and.returnValue("working-branch");
+        git.currentBranch.and.returnValue("working-branch");
+        git.mobBranch.and.returnValue("working-branch-mobbing");
         subject.run("start");
-        expectCurrentBranchToHaveBeenRead();
         expectCommands([
             "git checkout -B working-branch-mobbing",
             "git push --set-upstream origin working-branch-mobbing",
@@ -32,25 +41,15 @@ describe("Falco", () => {
     });
 
     describe("when driving", () => {
-        describe("given the user is not on the mobbing branch yet", () => {
-            it("checks it out", () => {
-                spyOn(mocked.cmd, 'read').and.returnValue("driving-branch");
-                subject.run("drive");
-                expectCurrentBranchToHaveBeenRead();
-                expectCommands(expectedCommands);
-            });
-        });
-
-        describe("given the user is already on the mobbing branch", () => {
-            it("just begins driving", () => {
-                spyOn(mocked.cmd, 'read').and.returnValue("driving-branch-mobbing");
-                subject.run("drive");
-                expectCommands(expectedCommands);
-            });
+        it("begins driving", () => {
+            git.currentBranch.and.returnValue("driving-branch");
+            git.mobBranch.and.returnValue("driving-branch-mobbing");
+            subject.run("drive");
+            expectCommands(expectedCommands);
         });
 
         const expectedCommands = [
-            "git fetch",
+            "git fetch --prune",
             "git checkout driving-branch-mobbing",
             "git pull",
             "git status"
@@ -68,7 +67,7 @@ describe("Falco", () => {
 
         describe("given the user is not on a mobbing branch", () => {
             it("throws an error", () => {
-                spyOn(mocked.cmd, 'read').and.returnValue("some-other-branch");
+                git.currentBranch.and.returnValue("some-other-branch");
                 expect(() => subject.run("commit", "feat: OH YEAH"))
                     .toThrowError(strings.notOnAMobbingBranchError);
             });
@@ -76,7 +75,7 @@ describe("Falco", () => {
 
         describe("given a message", () => {
             beforeEach(() => {
-                spyOn(mocked.cmd, 'read').and.returnValue("committing-branch-mobbing");
+                git.currentBranch.and.returnValue("committing-branch-mobbing");
                 subject.run("commit", "feat: we did it!");
             });
 
@@ -100,12 +99,13 @@ describe("Falco", () => {
     describe("when stopping", () => {
 
         beforeEach(() => {
-            spyOn(mocked.cmd, 'read').and.returnValue("stopping-branch-mobbing");
+            git.currentBranch.and.returnValue("stopping-branch-mobbing");
+            git.mobBranch.and.returnValue("stopping-branch-mobbing");
             subject.run("stop");
         });
 
         it("reads the current branch", () => {
-            expectCurrentBranchToHaveBeenRead();
+            expect(git.currentBranch).toHaveBeenCalled();
         });
 
         it("stops the session", () => {
@@ -120,17 +120,17 @@ describe("Falco", () => {
     });
 
     describe("when cleaning", () => {
+        beforeEach(() => {
+            git.currentBranch.and.returnValue("cleaning-branch-mobbing");
+            subject.run("clean");
+        });
+
         describe("given the user is not on a mobbing branch", () => {
             it("throws an error", () => {
-                mocked.cmd.read.and.returnValue("cleaning-branch");
+                git.currentBranch.and.returnValue("cleaning-branch");
                 expect(() => subject.run("clean"))
                     .toThrowError(strings.notOnAMobbingBranchError);
             });
-        });
-
-        beforeEach(() => {
-            spyOn(mocked.cmd, 'read').and.returnValue("cleaning-branch-mobbing");
-            subject.run("clean");
         });
 
         it("cleans the workspace", () => {
@@ -148,16 +148,28 @@ describe("Falco", () => {
     });
 
     function mock() {
-        rewiremock('../src/cmd').with(mocked.cmd);
-        rewiremock('../src/usage').with(mocked.usage);
+        mockCmd();
+        mockUsage();
+        mockGit();
         rewiremock.enable();
-        spyOn(mocked.cmd, 'run');
-        spyOn(mocked.usage, 'show');
-        spyOn(console, 'log').and.callThrough();
     }
 
-    function expectCurrentBranchToHaveBeenRead() {
-        expect(mocked.cmd.read).toHaveBeenCalledWith("git rev-parse --abbrev-ref HEAD");
+    function mockGit() {
+        rewiremock('../src/git').with(git);
+        spyOn(git, 'currentBranch');
+        spyOn(git, 'mobBranch');
+        spyOn(git, 'root').and.returnValue("/path/to/my/git/repo");
+        spyOn(git, 'stage').and.returnValue("git add .");
+    }
+
+    function mockUsage() {
+        rewiremock('../src/usage').with(mocked.usage);
+        spyOn(mocked.usage, 'show');
+    }
+
+    function mockCmd() {
+        rewiremock('../src/cmd').with(mocked.cmd);
+        spyOn(mocked.cmd, 'run');
     }
 
     function expectCommands(commands) {
