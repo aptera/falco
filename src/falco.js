@@ -44,9 +44,7 @@ function commit(message) {
     git.validateThatBranchIsMobbing(mobBranchName);
 
     return [
-        git.stage(),
-        git.commit('wip'),
-        git.push(),
+        ...pass(),
         git.checkout(mobBranchName.replace("-mobbing", "")),
         git.merge(mobBranchName),
         git.commit(message),
