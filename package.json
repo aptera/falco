@@ -1,6 +1,6 @@
 {
   "name": "@aptera/falco",
-  "version": "0.3.3",
+  "version": "0.3.4",
   "description": "Sanitary pair and mob programming for the modern age",
   "main": "bin/index.js",
   "scripts": {
@@ -25,6 +25,6 @@
   "devDependencies": {
     "jasmine": "^3.5.0",
     "rewiremock": "^3.14.1",
-    "nodemon":"^2.0.4"
+    "nodemon": "^2.0.4"
   }
 }

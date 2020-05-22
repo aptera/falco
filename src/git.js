@@ -1,4 +1,5 @@
 const strings = require('./strings');
+const cmd = require('./cmd');
 
 module.exports = {
     root: root,
