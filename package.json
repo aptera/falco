@@ -1,6 +1,6 @@
 {
   "name": "@aptera/falco",
-  "version": "0.3.4",
+  "version": "0.3.5",
   "description": "Sanitary pair and mob programming for the modern age",
   "main": "bin/index.js",
   "scripts": {
@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://aptera@dev.azure.com/aptera/Aptera/_git/falco"
+    "url": "https://github.com/aptera/falco"
   },
   "keywords": [
     "mob programming",
