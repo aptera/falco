@@ -46,7 +46,6 @@ describe("The git module", () => {
 
     });
 
-    // it("", () => { });
 
     beforeEach(() => {
         mock();
