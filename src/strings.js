@@ -12,11 +12,11 @@ module.exports = {
     isMobbing: isMobbing
 }
 
-// SPIKE
 function isMobbing(branchName) {
     return new RegExp(mobbingRegex).test(branchName);
 }
 
+// SPIKE
 function mobified(branchName) {
     return isMobbing(branchName)
         ? branchName

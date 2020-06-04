@@ -23,7 +23,6 @@ module.exports = {
     deleteLocal: (branch) => `git branch -D ${branch}`,
 }
 
-// SPIKE
 function root() {
     try {
         return cmd.read(`git rev-parse --show-toplevel`);
